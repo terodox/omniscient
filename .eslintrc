@@ -10,10 +10,12 @@
     "globals": {
         "angular": true
     },
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": 2017,
         "sourceType": "module"
     },
+    "plugins": ["@typescript-eslint"],
     "extends": "eslint:recommended",
     "rules": {
         "valid-jsdoc": "error",
