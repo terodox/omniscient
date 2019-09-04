@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -rf cjs/* module/*",
     "build": "npm run clean && npm run build.cjs",
-    "build.cjs": "tsc --outDir cjs --module commonjs",
+    "build.cjs": "tsc --outDir cjs --module commonjs -d",
     "pretest": "npm audit && eslint ./src/**/*.ts",
     "test": "jest",
     "test.live": "jest --watch"
