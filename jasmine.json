@@ -1,0 +1,10 @@
+{
+    "helper paths are relative to": "spec_dir",
+    "helpers": [
+        "../node_modules/esm/esm.js"
+    ],
+    "spec_dir": "./src",
+    "spec_files": [
+      "**/*.spec.js"
+    ]
+}

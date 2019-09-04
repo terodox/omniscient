@@ -1,0 +1,35 @@
+{
+  "name": "omniscient",
+  "version": "0.0.0",
+  "description": "The simplest usable global state management",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "npm audit && eslint ./src",
+    "test": "scripts/test",
+    "test.live": "nodemon -x 'scripts/test' -w js,json --watch src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/terodox/omniscient.git"
+  },
+  "keywords": [
+    "state",
+    "state-management",
+    "redux"
+  ],
+  "author": "Andy Desmarais <terodox@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/terodox/omniscient/issues"
+  },
+  "homepage": "https://github.com/terodox/omniscient#readme",
+  "devDependencies": {
+    "acorn": "7.0.0",
+    "eslint": "6.3.0",
+    "jasmine": "3.4.0",
+    "nodemon": "1.19.2"
+  },
+  "dependencies": {
+    "esm": "3.2.25"
+  }
+}
