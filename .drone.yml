@@ -1,0 +1,33 @@
+pipeline:
+  install:
+    image: node:10
+    commands:
+      - npm ci
+  audit:
+    image: node:10
+    commands:
+      - npm audit
+  test_node8:
+    image: node:8
+    commands:
+      - npm test
+  test_node10:
+    image: node:10
+    commands:
+      - npm test
+  test_node12:
+    image: node:12
+    commands:
+      - npm test
+  deploy:
+    image: node:12
+    commands:
+      - echo "//registry.npmjs.org/:_authToken=$${NPM_DEPLOY_TOKEN}" > ~/.npmrc
+      - echo "unsafe-perm=true" >> ~/.npmrc
+      - npm publish
+    secrets:
+      - npm_deploy_token
+    when:
+      event: tag
+      branch:
+        - include: [ v* ]
