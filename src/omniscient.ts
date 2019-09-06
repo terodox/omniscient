@@ -8,22 +8,7 @@ interface CallbackMap {
     [key: string]: CallbackEntry;
 }
 
-interface GetUpdatesOptions {
-    property: string;
-    callback: (value: any) => void;
-}
-
-interface SetStateOptions {
-    property: string;
-    value: any;
-}
-
 type RegistrationId = number;
-
-interface UnregisterOptions {
-    property: string;
-    registrationId: RegistrationId;
-}
 
 export class Omniscient<T> {
     private _state: T;
@@ -50,20 +35,20 @@ export class Omniscient<T> {
         return (<PropT>(<unknown>this._state));
     }
 
-    setState(options: SetStateOptions | T) {
-        const setStateOptions: SetStateOptions = (<any>options);
-        if(setStateOptions.property && setStateOptions.value) {
-            if(typeof setStateOptions.property !== 'string') {
+    setState(propertyOrValue: string | T, value?: any) {
+        if(propertyOrValue && value) {
+            const property = propertyOrValue;
+            if(typeof property !== 'string') {
                 throw new TypeError('property must be a string');
             }
-            (<any>this._state)[setStateOptions.property] = setStateOptions.value;
-            this._invokeCallbacks(setStateOptions);
+            (<any>this._state)[property] = value;
+            this._invokeCallbacks(property, value);
             return;
         }
-        this._state = <T>options;
+        this._state = <T>propertyOrValue;
     }
 
-    _invokeCallbacks({ property, value } : SetStateOptions) {
+    _invokeCallbacks(property: string, value: any) {
         if(this._callbackMap[property]) {
             for(const [_, callback] of Object.entries(this._callbackMap[property])) { // eslint-disable-line no-unused-vars
                 try {
@@ -73,7 +58,7 @@ export class Omniscient<T> {
         }
     }
 
-    registerCallback({ callback, property }: GetUpdatesOptions): RegistrationId {
+    registerCallback(property: string, callback: (newValue: any) => void): RegistrationId {
         if(typeof callback !== 'function') {
             throw new TypeError('callback must be a function');
         }
@@ -94,7 +79,7 @@ export class Omniscient<T> {
         return registrationId;
     }
 
-    unregister({ property, registrationId }: UnregisterOptions): void {
+    unregister(property: string, registrationId: RegistrationId): void {
         if(typeof property !== 'string') {
             throw new TypeError('property must be a string');
         }

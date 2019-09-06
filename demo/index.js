@@ -37,12 +37,9 @@ const setStateInitialState = {
 const omniscientSetState = new Omniscient(setStateInitialState);
 
 const currentUser = omniscientSetState.getState('user');
-omniscientSetState.setState({
-    property: 'user',
-    value: {
-        ...currentUser,
-        name: 'The Fett'
-    }
+omniscientSetState.setState('user', {
+    ...currentUser,
+    name: 'The Fett'
 });
 const { name } = omniscientSetState.getState('user');
 console.log('name === "The Fett"', name === 'The Fett'); // true
@@ -68,27 +65,18 @@ const callbackInitialState = {
 const callbackOmniscient = new Omniscient(callbackInitialState);
 
 const callback = (value) => console.log('Called from the callback:', JSON.stringify(value));
-const registrationId = callbackOmniscient.registerCallback({
-    property: 'user',
-    callback
-});
+const registrationId = callbackOmniscient.registerCallback('user', callback);
 
 const callbackUserOne = callbackOmniscient.getState('user');
-callbackOmniscient.setState({
-    property: 'user',
-    value: {
-        ...callbackUserOne,
-        name: 'The Fett'
-    }
+callbackOmniscient.setState('user', {
+    ...callbackUserOne,
+    name: 'The Fett'
 });
 
-callbackOmniscient.unregister({ property: 'user', registrationId });
+callbackOmniscient.unregister('user', registrationId);
 console.log('Callback will not be called again.');
 const callbackUserTwo = callbackOmniscient.getState('user');
-callbackOmniscient.setState({
-    property: 'user',
-    value: {
-        ...callbackUserTwo,
-        name: 'The Fett'
-    }
+callbackOmniscient.setState('user', {
+    ...callbackUserTwo,
+    name: 'The Fett'
 });

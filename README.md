@@ -67,12 +67,9 @@ const omniscient = new Omniscient(initialState);
 
 
 const currentUser = omniscient.getState('user');
-omniscient.setState({
-    property: 'user',
-    value: {
-        ...currentUser,
-        name: 'The Fett'
-    }
+omniscient.setState('user', {
+    ...currentUser,
+    name: 'The Fett'
 });
 const { name } = omniscient.getState('user');
 console.log(name === 'The Fett'); // true
@@ -105,32 +102,23 @@ const omniscient = new Omniscient(initialState);
 const callback = (value) => console.log('Called from the callback:', JSON.stringify(value));
 
 // Call this method any time the 'user' property changes
-const registrationId = omniscient.registerCallback({
-    property: 'user',
-    callback
-});
+const registrationId = omniscient.registerCallback('user', callback);
 
 const callbackUserOne = omniscient.getState('user');
 
 // This will trigger the call back
-omniscient.setState({
-    property: 'user',
-    value: {
-        ...callbackUserOne,
-        name: 'The Fett'
-    }
+omniscient.setState('user', {
+    ...callbackUserOne,
+    name: 'The Fett'
 });
 
 // When you no longer want to be called for a property change
-omniscient.unregister({ property: 'user', registrationId });
+omniscient.unregister('user', registrationId);
 
 console.log('Callback will not be called again.');
 const callbackUserTwo = omniscient.getState('user');
-omniscient.setState({
-    property: 'user',
-    value: {
-        ...callbackUserTwo,
-        name: 'The Fett'
-    }
+omniscient.setState('user', {
+    ...callbackUserTwo,
+    name: 'The Fett'
 });
 ```
