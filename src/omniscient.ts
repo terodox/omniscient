@@ -40,7 +40,7 @@ export class Omniscient<T> {
     getState<PropT>(property?: string): PropT {
         if(property) {
             if(typeof property !== 'string') {
-                throw new TypeError('property must be a string');
+                throw new TypeError();
             }
             if(!this._state.hasOwnProperty(property)) {
                 throw new Error(`The requested property (${property}) does not exist in the current state.`);
