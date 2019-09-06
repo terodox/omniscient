@@ -6,7 +6,9 @@
   "scripts": {
     "clean": "rm -rf cjs/* module/*",
     "build": "npm run clean && npm run build.cjs",
-    "build.cjs": "tsc --outDir cjs --module commonjs -d",
+    "build.cjs": "tsc --outDir cjs --module commonjs -d && npm run minify.cjs",
+    "minify.cjs": "uglifyjs --compress --mangle --output cjs/omniscient.min.js -- cjs/omniscient.js",
+    "postbuild": "echo 'Uncompressed size:' `gzip -c ./cjs/omniscient.js | wc -c` && echo 'Gzipped size:' `gzip -c ./cjs/omniscient.min.js | wc -c`",
     "pretest": "npm audit && eslint ./src/**/*.ts",
     "test": "jest",
     "test.live": "jest --watch"
@@ -34,7 +36,8 @@
     "eslint": "6.3.0",
     "jest": "^24.9.0",
     "ts-jest": "^24.0.2",
-    "typescript": "3.6.2"
+    "typescript": "3.6.2",
+    "uglify-js": "3.6.0"
   },
   "dependencies": {
     "tsc": "^1.20150623.0"
