@@ -1,5 +1,5 @@
 {
-  "name": "omniscient",
+  "name": "@terodox/omniscient",
   "version": "0.0.2",
   "description": "The simplest usable global state management",
   "main": "cjs/index.js",
