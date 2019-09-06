@@ -40,7 +40,7 @@ export class Omniscient<T> {
     getState<PropT>(property?: string): PropT {
         if(property) {
             if(typeof property !== 'string') {
-                throw new TypeError();
+                throw new TypeError('property must be a string');
             }
             if(!this._state.hasOwnProperty(property)) {
                 throw new Error(`The requested property (${property}) does not exist in the current state.`);
@@ -54,7 +54,7 @@ export class Omniscient<T> {
         const setStateOptions: SetStateOptions = (<any>options);
         if(setStateOptions.property && setStateOptions.value) {
             if(typeof setStateOptions.property !== 'string') {
-                throw new TypeError('property must be a string')
+                throw new TypeError('property must be a string');
             }
             (<any>this._state)[setStateOptions.property] = setStateOptions.value;
             this._invokeCallbacks(setStateOptions);
@@ -65,10 +65,10 @@ export class Omniscient<T> {
 
     _invokeCallbacks({ property, value } : SetStateOptions) {
         if(this._callbackMap[property]) {
-            for(const [_, callback] of Object.entries(this._callbackMap[property])) {
+            for(const [_, callback] of Object.entries(this._callbackMap[property])) { // eslint-disable-line no-unused-vars
                 try {
                     callback(value);
-                } catch(err) {}
+                } catch(err) {} // eslint-disable-line
             }
         }
     }
