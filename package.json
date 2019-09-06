@@ -2,7 +2,7 @@
   "name": "omniscient",
   "version": "0.0.1",
   "description": "The simplest usable global state management",
-  "main": "index.js",
+  "main": "cjs/index.js",
   "scripts": {
     "clean": "rm -rf cjs/* module/*",
     "build": "npm run clean && npm run build.cjs",
@@ -10,7 +10,7 @@
     "minify.cjs": "uglifyjs --compress --mangle --output cjs/omniscient.min.js -- cjs/omniscient.js",
     "postbuild": "echo 'Uncompressed size:' `gzip -c ./cjs/omniscient.js | wc -c` && echo 'Gzipped size:' `gzip -c ./cjs/omniscient.min.js | wc -c`",
     "postversion": "git push --follow-tags",
-    "pretest": "npm audit && eslint ./src/**/*.ts",
+    "pretest": "npm audit && npm run demo && eslint ./src/**/*.ts",
     "preversion": "npm test",
     "start": "npm run build && node ./demo",
     "test": "jest",
