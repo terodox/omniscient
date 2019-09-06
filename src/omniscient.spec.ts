@@ -79,6 +79,29 @@ describe('setState', () => {
 
         expect(omniscient.getState('the')).toBe(expectedState);
     });
+
+    test('should not throw if callback throws', () => {
+        const omniscient = new Omniscient<TestInterface>({ the: 'best' });
+        const expectedValue = 'yup';
+        const callback = jest.fn().mockImplementation(() => { throw new Error('Booooooooom'); });
+        omniscient.registerCallback({ property: 'the', callback });
+
+        expect(() => omniscient.setState({ property: 'the', value: expectedValue})).not.toThrow();
+    });
+
+    test('should invoke all callbacks even if one throws', () => {
+        const omniscient = new Omniscient<TestInterface>({ the: 'best' });
+        const expectedValue = 'yup';
+        const callbackOne = jest.fn().mockImplementation(() => { throw new Error('Booooooooom'); });
+        const callbackTwo = jest.fn().mockImplementation(() => { throw new Error('Booooooooom'); });
+        omniscient.registerCallback({ property: 'the', callback: callbackOne });
+        omniscient.registerCallback({ property: 'the', callback: callbackTwo });
+
+        omniscient.setState({ property: 'the', value: expectedValue});
+
+        expect(callbackOne).toHaveBeenCalledWith(expectedValue);
+        expect(callbackTwo).toHaveBeenCalledWith(expectedValue);
+    });
 });
 
 describe('register callback', () => {
@@ -117,5 +140,45 @@ describe('register callback', () => {
         omniscient.setState({ property: 'the', value: expectedValue});
 
         expect(callback).toHaveBeenCalledWith(expectedValue);
+    });
+});
+
+describe('unregister', () => {
+    test('should throw if property is not a string', () => {
+        const omniscient = new Omniscient<any>({});
+
+        expect(() => omniscient.unregister({ property: <any>{}, registrationId: 1234 })).toThrowError('property');
+    });
+
+    test('should throw if registrationId is not a number', () => {
+        const omniscient = new Omniscient<any>({});
+
+        expect(() => omniscient.unregister({ property: 'the', registrationId: <any>'abcd' })).toThrowError('registrationId');
+    });
+
+    test('if should not throw if registration id is no longer valid', () => {
+        const omniscient = new Omniscient<TestInterface>({ the: 'best' });
+        const callback = jest.fn();
+        const registrationId = omniscient.registerCallback({ property: 'the', callback });
+        omniscient.setState({ property: 'the', value: 'once'});
+
+        omniscient.unregister({ property: 'the', registrationId });
+
+        expect(() => omniscient.setState({ property: 'the', value: 'again'})).not.toThrow();
+    });
+
+    test('if should not throw if registration id is no longer valid', () => {
+        const omniscient = new Omniscient<TestInterface>({ the: 'best' });
+        const callback = jest.fn();
+        const registrationId = omniscient.registerCallback({ property: 'the', callback });
+        omniscient.setState({ property: 'the', value: 'once'});
+
+        expect(callback).toHaveBeenCalledTimes(1);
+
+        omniscient.unregister({ property: 'the', registrationId });
+
+        omniscient.setState({ property: 'the', value: 'again'});
+
+        expect(callback).toHaveBeenCalledTimes(1);
     });
 });
