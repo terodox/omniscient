@@ -67,9 +67,12 @@ const omniscient = new Omniscient(initialState);
 
 
 const currentUser = omniscient.getState('user');
-omniscient.setState('user', {
-    ...currentUser,
-    name: 'The Fett'
+omniscient.setState({
+    property: 'user',
+    value: {
+        ...currentUser,
+        name: 'The Fett'
+    }
 });
 const { name } = omniscient.getState('user');
 console.log(name === 'The Fett'); // true
@@ -82,4 +85,52 @@ const allState = omniscient.getState();
 console.log(allState === newState); // true
 ```
 
+### registerCallback and unregister
 
+These are the callback management methods.  If you want to know when a property changes, you'll call `registerCallback`. If you stop caring about that property, you'll call `unregister`.
+
+```javascript
+const initialState = {
+    user: {
+        id: 1234,
+        name: 'Boba Fett'
+    },
+    lastAction: {
+        name: 'Being awesome',
+        time: 'May 25, 1983'
+    }
+};
+const omniscient = new Omniscient(initialState);
+
+const callback = (value) => console.log('Called from the callback:', JSON.stringify(value));
+
+// Call this method any time the 'user' property changes
+const registrationId = omniscient.registerCallback({
+    property: 'user',
+    callback
+});
+
+const callbackUserOne = omniscient.getState('user');
+
+// This will trigger the call back
+omniscient.setState({
+    property: 'user',
+    value: {
+        ...callbackUserOne,
+        name: 'The Fett'
+    }
+});
+
+// When you no longer want to be called for a property change
+omniscient.unregister({ property: 'user', registrationId });
+
+console.log('Callback will not be called again.');
+const callbackUserTwo = omniscient.getState('user');
+omniscient.setState({
+    property: 'user',
+    value: {
+        ...callbackUserTwo,
+        name: 'The Fett'
+    }
+});
+```
