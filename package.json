@@ -1,6 +1,6 @@
 {
   "name": "omniscient-state",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "The simplest usable global state management",
   "main": "cjs/omniscient.js",
   "scripts": {
