@@ -2,7 +2,7 @@
   "name": "omniscient-state",
   "version": "0.0.5",
   "description": "The simplest usable global state management",
-  "main": "cjs/omniscient.min.js",
+  "main": "cjs/omniscient.js",
   "scripts": {
     "clean": "rm -rf cjs/* module/*",
     "build": "npm run clean && npm run build.cjs",
