@@ -1,0 +1,12 @@
+.github/
+demo/
+scripts/
+src/
+node_modules/
+
+.drone.yml
+.eslintignore
+.eslintrc
+.nvmrc
+jest.config.js
+tsconfig.json
