@@ -39,7 +39,7 @@
     "acorn": "7.1.0",
     "eslint": "6.4.0",
     "jest": "24.9.0",
-    "ts-jest": "24.1.0",
+    "ts-jest": "25.5.0",
     "typescript": "3.6.3",
     "uglify-js": "3.6.0"
   },
